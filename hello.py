@@ -6,4 +6,16 @@ app = FastAPI()
 def home():
     return {"Hello":"sigmotoa says"}
 
+@app.get('/samid')
+def home():
+    return{
+        "nombre":"Samid Amaury Barrera Camargo",
+        "Documento":"80808080",
+        "Departamento":"Bogota D.C.",
+        "Ciudad":"Bogota D.C.",
+        "Codigo postal":"101010",
+        "Deportes":["Tenis de mesa","Bicicleta de montaña"],
+        "Cargo":"Analista de datos",
+        "Empresa":"Grupo MOK"
 
+    }
