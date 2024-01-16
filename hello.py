@@ -6,6 +6,9 @@ app = FastAPI()
 def home():
     return {"Hello":"sigmotoa says"}
 
+@app.get("/sebastian")
+def home():
+    return {"hello word" : "wello here"}
 
 @app.get("/sigmotoa")
 def sigmotoa():
