@@ -1,13 +1,25 @@
-from fastapi import FastAPI, Query, Path
+from fastapi import FastAPI, Query, Path, Body
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class User(BaseModel):
     user_id : int
-    user_name : str
-    #user_status : Optional [bool]
+    user_name : str =Field(...,
+                           min_length = 2,
+                           max_length = 25)
+    user_status : Optional [bool]
 
 app = FastAPI()
+
+@app.put("/user/show/{user_id}")
+def show_user(
+    user_id:int = Path(...,
+                       title="User id :)",
+                       gt=0),
+    user:User = Body(...)
+):
+    return user
+
 
 @app.get("/user/detail/{user_id}")
 def user_detail_id(user_id:int =Path(
