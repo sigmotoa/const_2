@@ -1,12 +1,32 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query, Path
+from typing import Optional
 from pydantic import BaseModel
 
 class User(BaseModel):
     user_id : int
     user_name : str
-    user_status : Optional [bool]
+    #user_status : Optional [bool]
 
 app = FastAPI()
+
+@app.get("/user/detail/{user_id}")
+def user_detail_id(user_id:int =Path(
+                    ...,
+                    gt=0,
+                    title = "User id number",
+                    description ="Id for the user")
+                    ):
+    return {user_id:"ok"}
+
+
+
+
+@app.get("/user/detail")
+def user_detail(name:Optional [str] = Query(None, min_length=2, max_length=25),
+                age: Optional [int] = Query(...) ):
+    return {name:age}
+
+
 
 @app.get("/{user}/{year}")
 def age(user:str, year:int):
