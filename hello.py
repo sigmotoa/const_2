@@ -2,11 +2,9 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-@app.get("/user/{year}")
-def age(year:int):
-    return{"your age is: "+(str)(2024-year)}
-
-
+@app.get("/{user}/{year}")
+def age(user:str, year:int):
+    return{user + " your age is: "+(str)(2024-year)}
 
 
 @app.get("/")
