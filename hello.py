@@ -2,6 +2,13 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+@app.get("/user/{year}")
+def age(year:int):
+    return{"your age is: "+(str)(2024-year)}
+
+
+
+
 @app.get("/")
 def home():
     return {"Hello":"sigmotoa says"}
