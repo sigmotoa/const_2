@@ -8,11 +8,11 @@ def age(user:str, year:int):
 
 
 @app.get("/")
-def home():
+def hello():
     return {"Hello":"sigmotoa says"}
 
 @app.get('/samid')
-def home():
+def samid():
     return{
         "nombre":"Samid Amaury Barrera Camargo",
         "Documento":"80808080",
@@ -26,7 +26,7 @@ def home():
     }
 
 @app.get("/sebastian")
-def home():
+def sebastiane():
     return {"hello word" : "wello here"}
 
 @app.get("/sigmotoa")
