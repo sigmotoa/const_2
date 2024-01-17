@@ -2,9 +2,9 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-@app.get("/{user}/{year}")
-def age(user:str, year:int):
-    return{user + " your age is: "+(str)(2024-year)}
+@app.get("/{user1}/{year}")
+def age(user1:str, year:int):
+    return{user1 + " your age is: "+(str)(2024-year)}
 
 
 @app.get("/")
@@ -27,7 +27,7 @@ def home():
 
 @app.get("/sebastian")
 def home():
-    return {"hello word" : "wello here"}
+    return {"hello word" : "wello here123"}
 
 @app.get("/sigmotoa")
 def sigmotoa():
@@ -59,4 +59,8 @@ def zodiaco(mes:str, dia:int):
         return {"aioros de sagitario"}
     elif mes == "enero" and dia <= 19 or mes == "siciembre" and dia >= 22:
         return {"shura de caricornio"}
-    else: return "escriba bien"
+    else: return {"escriba bien"}
+
+@app.get("/nprimos/{var}")
+def calprimos(var:int):
+    return {(str)(var)}
