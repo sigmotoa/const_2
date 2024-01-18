@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Query, Path, Body, status, Form
-from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse
+from fastapi import FastAPI, Query, Path, Body, status, Form, File, UploadFile
+from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse, FileResponse
 from typing import Optional
 from pydantic import BaseModel, Field
 from enums import HairColor, Zodiac
+import os
 
 class Person(BaseModel):
     first_name:str=Field(
@@ -60,6 +61,42 @@ class LoginOut(BaseModel):
 
 
 app = FastAPI()
+
+def directory_is_ready():
+    os.makedirs(os.getcwd()+"/files", exist_ok=True)
+    return os.getcwd()+"/files/"
+
+@app.get("/download/{file_name}")
+def download_file(file_name:str=Path(...)):
+    dir=directory_is_ready()
+    path=dir+file_name
+    return FileResponse(path, media_type="application/octet_stream", filename=file_name)
+
+
+@app.get("/file/{file_name}")
+async def show_file(file_name:str=Path(...)):
+    dir=directory_is_ready()
+    path=dir+file_name
+    return FileResponse(path)
+
+@app.post("/upload2", status_code = status.HTTP_202_ACCEPTED)
+async def upload_save_image(image:UploadFile=File(...)):
+    dir = directory_is_ready()
+    with open(dir+image.filename, "wb") as myfile:
+        content = await image.read()
+        myfile.write(content)
+        myfile.close()
+    return "Success"
+
+
+
+@app.post("/upload", status_code = status.HTTP_202_ACCEPTED)
+def upload_image(
+    image:UploadFile = File(...)
+):
+    return {"Nombre":image.filename,
+            "Formato":image.content_type,
+            "Tamaño":len(image.file.read())}
 
 @app.get("/redirect")
 def redirect():
