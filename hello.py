@@ -151,7 +151,7 @@ def age(user1:str, year:int):
     return{user1 + " your age is: "+(str)(2024-year)}
 
 
-@app.get("/", status_code=status.HTTP_200_OK)
+@app.get("/")
 def hello():
     return {"Hello":"sigmotoa says"}
 
@@ -170,12 +170,26 @@ def samid():
     }
 
 @app.get("/sebastian")
-def home():
-    return {"hello word" : "wello here123"}
+def sebastiane():
+    return {"hello word" : "wello here"}
 
 @app.get("/sigmotoa")
 def sigmotoa():
     return ("Hi, this is sigmotoa")
+
+@app.get("/nprimos/{var}")
+def calpri(var:int):  
+    var3 = 2
+    cont = 0
+    var2 = []
+    while (cont < var):
+        if is_prime(var3):
+            cont +=1
+            var2.append(var3)
+            var3 += 1
+        else:
+            var3 += 1
+    return {"numeros_primos": var2}
 
 @app.get("/caballero/{mes}/{dia}")
 def zodiaco(mes:str, dia:int):   
@@ -204,7 +218,3 @@ def zodiaco(mes:str, dia:int):
     elif mes == "enero" and dia <= 19 or mes == "siciembre" and dia >= 22:
         return {"shura de caricornio"}
     else: return {"escriba bien"}
-
-@app.get("/nprimos/{var}")
-def calprimos(var:int):
-    return {(str)(var)}
