@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Query, Path, Body, status, Form
+from fastapi.responses import HTMLResponse, PlainTextResponse
 from typing import Optional
 from pydantic import BaseModel, Field
 from enums import HairColor, Zodiac
@@ -59,6 +60,21 @@ class LoginOut(BaseModel):
 
 
 app = FastAPI()
+
+@app.get("/html", response_class = HTMLResponse)
+def html():
+    return """
+<html>
+<head>
+<title>
+HTML Response
+</title>
+<body>
+<h1>Hola Html</h1>
+</body>
+</head>
+</html>
+"""
 
 @app.post(
         path="/login",
