@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query, Path, Body, status
+from fastapi import FastAPI, Query, Path, Body, status, Form
 from typing import Optional
 from pydantic import BaseModel, Field
 from enums import HairColor, Zodiac
@@ -34,16 +34,13 @@ class Person(BaseModel):
         example=False
         )
 
-
 class PersonOut(Person):
     pass
-
 class PersonIn(Person):
     password:str=Field(
         ...,
         min_length=5
         )
-
 class User(BaseModel):
     user_id : int
     user_name : str =Field(...,
@@ -51,7 +48,25 @@ class User(BaseModel):
                            max_length = 25)
     user_status : Optional [bool]
 
+class LoginOut(BaseModel):
+    username:str=Field(...,
+                      example="sigmotoa")
+    password:str=Field(
+        ...,
+        min_length=5
+        )
+
+
+
 app = FastAPI()
+
+@app.post(
+        path="/login",
+        status_code=status.HTTP_200_OK,
+        response_model = LoginOut)
+def login_method(username:str=Form(...),
+          password:str=Form(...)):
+    return LoginOut(username=username)
 
 
 @app.post("/person/new", response_model=PersonOut, status_code=status.HTTP_201_CREATED)
