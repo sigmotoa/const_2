@@ -2,17 +2,21 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-@app.get("/{user1}/{year}")
-def age(user1:str, year:int):
-    return{user1 + " your age is: "+(str)(2024-year)}
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
 
 
 @app.get("/")
-def home():
+def hello():
     return {"Hello":"sigmotoa says"}
 
 @app.get('/samid')
-def home():
+def samid():
     return{
         "nombre":"Samid Amaury Barrera Camargo",
         "Documento":"80808080",
@@ -26,12 +30,26 @@ def home():
     }
 
 @app.get("/sebastian")
-def home():
-    return {"hello word" : "wello here123"}
+def sebastiane():
+    return {"hello word" : "wello here"}
 
 @app.get("/sigmotoa")
 def sigmotoa():
     return ("Hi, this is sigmotoa")
+
+@app.get("/nprimos/{var}")
+def calpri(var:int):  
+    var3 = 2
+    cont = 0
+    var2 = []
+    while (cont < var):
+        if is_prime(var3):
+            cont +=1
+            var2.append(var3)
+            var3 += 1
+        else:
+            var3 += 1
+    return {"numeros_primos": var2}
 
 @app.get("/caballero/{mes}/{dia}")
 def zodiaco(mes:str, dia:int):   
@@ -60,7 +78,3 @@ def zodiaco(mes:str, dia:int):
     elif mes == "enero" and dia <= 19 or mes == "siciembre" and dia >= 22:
         return {"shura de caricornio"}
     else: return {"escriba bien"}
-
-@app.get("/nprimos/{var}")
-def calprimos(var:int):
-    return {(str)(var)}
