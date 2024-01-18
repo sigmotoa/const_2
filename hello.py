@@ -66,6 +66,12 @@ def directory_is_ready():
     os.makedirs(os.getcwd()+"/files", exist_ok=True)
     return os.getcwd()+"/files/"
 
+@app.get("/file/{file_name}")
+async def show_file(file_name:str=Path(...)):
+    dir=directory_is_ready()
+    path=dir+file_name
+    return FileResponse(path)
+
 @app.post("/upload2", status_code = status.HTTP_202_ACCEPTED)
 async def upload_save_image(image:UploadFile=File(...)):
     dir = directory_is_ready()
