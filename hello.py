@@ -102,12 +102,6 @@ def user_detail(name:Optional [str] = Query(None, min_length=2, max_length=25),
     return {name:age}
 
 
-
-@app.get("/{user}/{year}")
-def age(user:str, year:int):
-    return{user + " your age is: "+(str)(2024-year)}
-
-
 @app.get("/", status_code=status.HTTP_200_OK)
 def hello():
     return {"Hello":"sigmotoa says"}
@@ -160,4 +154,11 @@ def zodiaco(mes:str, dia:int):
         return {"aioros de sagitario"}
     elif mes == "enero" and dia <= 19 or mes == "siciembre" and dia >= 22:
         return {"shura de caricornio"}
-    else: return "escriba bien"
+    else: return {"escriba bien"}
+
+@app.get("/nimpar/{nver}")
+def valimpar(nver:int):
+    if nver % 2 == 0:
+        return{nver : "no es impar" } 
+    else:
+        return{nver : "es impar" } 
