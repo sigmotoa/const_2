@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query, Path, Body, status, Form
+from fastapi import FastAPI, Query, Path, Body, status, Form, File, UploadFile
 from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse
 from typing import Optional
 from pydantic import BaseModel, Field
@@ -60,6 +60,13 @@ class LoginOut(BaseModel):
 
 
 app = FastAPI()
+
+@app.post("/upload", status_code = status.HTTP_202_ACCEPTED)
+def upload_image(
+    image:UploadFile = File(...)
+):
+    return {"Nombre":image.filename,
+            "Formato":image.content_type}
 
 @app.get("/redirect")
 def redirect():
