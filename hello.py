@@ -103,12 +103,55 @@ def user_detail(name:Optional [str] = Query(None, min_length=2, max_length=25),
 
 
 
-@app.get("/{user}/{year}")
-def age(user:str, year:int):
-    return{user + " your age is: "+(str)(2024-year)}
+@app.post(
+        path="/login",
+        status_code=status.HTTP_200_OK,
+        response_model = LoginOut)
+def login_method(username:str=Form(...),
+          password:str=Form(...)):
+    return LoginOut(username=username)
 
 
-@app.get("/", status_code=status.HTTP_200_OK)
+@app.post("/person/new", response_model=PersonOut, status_code=status.HTTP_201_CREATED)
+def create_person(person:PersonIn=Body(...)):
+    return person
+
+
+@app.put("/user/show/{user_id}")
+def show_user(
+    user_id:int = Path(...,
+                       title="User id :)",
+                       gt=0),
+    user:User = Body(...)
+):
+    return user
+
+
+@app.get("/user/detail/{user_id}")
+def user_detail_id(user_id:int =Path(
+                    ...,
+                    gt=0,
+                    title = "User id number",
+                    description ="Id for the user")
+                    ):
+    return {user_id:"ok"}
+
+
+
+
+@app.get("/user/detail")
+def user_detail(name:Optional [str] = Query(None, min_length=2, max_length=25),
+                age: Optional [int] = Query(...) ):
+    return {name:age}
+
+
+
+@app.get("/{user1}/{year}")
+def age(user1:str, year:int):
+    return{user1 + " your age is: "+(str)(2024-year)}
+
+
+@app.get("/")
 def hello():
     return {"Hello":"sigmotoa says"}
 
@@ -133,6 +176,20 @@ def sebastiane():
 @app.get("/sigmotoa")
 def sigmotoa():
     return ("Hi, this is sigmotoa")
+
+@app.get("/nprimos/{var}")
+def calpri(var:int):  
+    var3 = 2
+    cont = 0
+    var2 = []
+    while (cont < var):
+        if is_prime(var3):
+            cont +=1
+            var2.append(var3)
+            var3 += 1
+        else:
+            var3 += 1
+    return {"numeros_primos": var2}
 
 @app.get("/caballero/{mes}/{dia}")
 def zodiaco(mes:str, dia:int):   
@@ -160,4 +217,4 @@ def zodiaco(mes:str, dia:int):
         return {"aioros de sagitario"}
     elif mes == "enero" and dia <= 19 or mes == "siciembre" and dia >= 22:
         return {"shura de caricornio"}
-    else: return "escriba bien"
+    else: return {"escriba bien"}
