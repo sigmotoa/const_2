@@ -1,8 +1,9 @@
 from fastapi import FastAPI, Query, Path, Body, status, Form, File, UploadFile
-from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse, FileResponse
 from typing import Optional
 from pydantic import BaseModel, Field
 from enums import HairColor, Zodiac
+import os
 
 class Person(BaseModel):
     first_name:str=Field(
@@ -60,6 +61,21 @@ class LoginOut(BaseModel):
 
 
 app = FastAPI()
+
+def directory_is_ready():
+    os.makedirs(os.getcwd()+"/files", exist_ok=True)
+    return os.getcwd()+"/files/"
+
+@app.post("/upload2", status_code = status.HTTP_202_ACCEPTED)
+async def upload_save_image(image:UploadFile=File(...)):
+    dir = directory_is_ready()
+    with open(dir+image.filename, "wb") as myfile:
+        content = await image.read()
+        myfile.write(content)
+        myfile.close()
+    return "Success"
+
+
 
 @app.post("/upload", status_code = status.HTTP_202_ACCEPTED)
 def upload_image(
