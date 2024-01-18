@@ -66,7 +66,8 @@ def upload_image(
     image:UploadFile = File(...)
 ):
     return {"Nombre":image.filename,
-            "Formato":image.content_type}
+            "Formato":image.content_type,
+            "Tamaño":len(image.file.read())}
 
 @app.get("/redirect")
 def redirect():
