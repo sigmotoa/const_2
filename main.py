@@ -4,6 +4,21 @@ from typing import Optional
 from pydantic import BaseModel, Field
 from enums import HairColor, Zodiac
 import os
+import psycopg2
+from psycopg2 import sql
+
+
+conn = psycopg2.connect(
+    database = "MusicList",
+    user="sigalvis",
+    password="haN4t0neEYZw",
+    host="ep-summer-unit-a46wkq9d.us-east-1.aws.neon.tech",
+    port="5432"
+)
+
+cur = conn.cursor()
+
+
 
 class Person(BaseModel):
     first_name:str=Field(
@@ -62,8 +77,26 @@ class LoginOut(BaseModel):
 
 app = FastAPI()
 
+
+@app.post("/newplaylist")
+def newplaylist(idplaylist:int=Form(...), nombreplaylist:str=Form(...)):
+    playlist = [idplaylist, nombreplaylist]
+    query = sql.SQL('INSERT INTO playlist(id_playlist, nombre_playlist) VALUES {}').format(
+        sql.SQL(",").join(map(sql.Literal, playlist))
+    )
+
+    cur.execute(query)
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return ("success")
+
+
+
 def directory_is_ready():
     os.makedirs(os.getcwd()+"/files", exist_ok=True)
+    os.chmod(dir_fd=os.getcwd()+"/files/",mode=777)
     return os.getcwd()+"/files/"
 
 @app.get("/download/{file_name}")
